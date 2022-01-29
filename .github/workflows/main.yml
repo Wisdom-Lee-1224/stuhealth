@@ -24,4 +24,4 @@ jobs:
         run: pip install -U -r requirements.txt
       - name: Run stuhealth
         working-directory: stuhealth
-        run: python stuhealth.py
+        run: python stuhealth.py  -u/--username, -p/--password, -ve/--validator-endpoint, -vt/--validator-token
