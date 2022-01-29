@@ -1,0 +1,27 @@
+name: stuhealth-checkin
+
+on:
+  workflow_dispatch:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron: '0 0 * * *'
+
+jobs:
+  stuhealth-checkin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Clone stuhealth repository
+        run: git clone https://github.com/SO-JNU/stuhealth.git
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - name: Install pip dependencies
+        working-directory: stuhealth
+        run: pip install -U -r requirements.txt
+      - name: Run stuhealth
+        working-directory: stuhealth
+        run: python stuhealth.py -u ${{ secrets.username }} -p ${{ secrets.password }} -ve ${{ secrets.validatorEndpoint }} -vt ${{ secrets.validatorToken }}
